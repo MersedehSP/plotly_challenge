@@ -35,7 +35,7 @@ function buildCharts(sample) {
         // Create bar chart in correct location
         var data = d3.json("sample.json");
       
-        d3.json(sample_url).then(function(data) {
+        d3.json("sample.json").then(function(data) {
       
           var sample_values = data.sample_values;
           console.log(sample_values);
@@ -46,8 +46,8 @@ function buildCharts(sample) {
       
           var data = [{
             values: sample_values,
-            labels: otu_ids,
-            hovertext: otu_labels,
+            x: data.otu_ids,
+            y: data.sample_values,
             type: 'bar'
             orientation: 'h'
           }];
@@ -61,8 +61,8 @@ function buildCharts(sample) {
       
           });
         // Create bubble chart in correct location
-        var chartsURL = "/samples/" + sample;
-        d3.json(chartsURL).then((data) => {
+        
+        d3.json("sample.json").then((data) => {
           var trace1 = {
             x: data.otu_ids,
             y: data.sample_values,
@@ -84,7 +84,7 @@ function buildCharts(sample) {
           Plotly.newPlot("bubble", trace1, layout);
 
 
-
+          /// gauge chart
           var bb_freqwash = [
             {
               type: "indicator",
