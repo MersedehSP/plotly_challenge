@@ -1,8 +1,8 @@
 
 // Define a function that will create metadata for given sample
 function buildMetadata(sample) {
-    d3.json("sample.json").then(metadata_=> {
-        console.log(metadata)
+    d3.json("sample.json").then(data_=> {
+        console.log(data)
 
         Object.entries(sample).forEach(([key, value]) => {
             console.log(key,value);
@@ -82,14 +82,65 @@ function buildCharts(sample) {
             width: 1500
           };
           Plotly.newPlot("bubble", trace1, layout);
-}
+
+
+
+          var bb_freqwash = [
+            {
+              type: "indicator",
+              mode: "gauge+number+delta",
+              value: data.WFREQ,
+              title: "Number of Belly Button Washes",
+              delta: { reference: 400, increasing: { color: "RebeccaPurple" } },
+              gauge: {
+                axis: { range: [null, 500], tickwidth: 1, tickcolor: "darkblue" },
+                bar: { color: "darkblue" },
+                bgcolor: "white",
+                borderwidth: 2,
+                bordercolor: "gray",
+                steps: [
+                    { range: [0, 1], color: "#B2EC5D" },
+                    { range: [1, 2], color: "#66FF00" },
+                    { range: [2, 3], color: "#93C572" },
+                    { range: [3, 4], color: "#87A96B" },
+                    { range: [4, 5], color: "#78866B" },
+                    { range: [5, 6], color: "#556B2F" },
+                    { range: [6, 7], color: "#414833" },
+                    { range: [7, 8], color: "#85BB65" },
+                    { range: [8, 9], color: "#87A96B" },
+                ],
+                threshold: {
+                  line: { color: "red", width: 4 },
+                  thickness: 0.75,
+                  value: 490
+                }
+              }
+            }
+          ];
+          
+          var layout = {
+            width: 500,
+            height: 400,
+            margin: { t: 25, r: 25, l: 25, b: 25 },
+            paper_bgcolor: "lavender",
+            font: { color: "darkblue", family: "Arial" }
+          };
+          
+          Plotly.newPlot('myDiv', data, layout);
+
+
+
+        }
+
+
+
 
 // Define function that will run on page load
 function init() {
 
     var selector = d3.select("#selDataset");
-
-    //  populate the select options using ls of sample names
+    // Read json data
+    // Parse and filter data to get sample names
     d3.json("/names").then((sampleNames) => {
       sampleNames.forEach((sample) => {
         selector
@@ -98,23 +149,17 @@ function init() {
           .property("value", sample);
       });
   
-      // Use the first sample from the list to build the initial plots
+    // Add dropdown option for each sample
+
+    // Use first sample to build metadata and initial plots
       const firstSample = sampleNames[0];
       buildCharts(firstSample);
       buildMetadata(firstSample);
       console.log(firstSample)
     });
   }
-    // Read json data
-
-        // Parse and filter data to get sample names
-
-        // Add dropdown option for each sample
-
-    // Use first sample to build metadata and initial plots
-
+    
 }
-
 function optionChanged(newSample){
 
     // Update metadata with newly selected sample
