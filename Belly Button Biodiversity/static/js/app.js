@@ -33,33 +33,46 @@ function buildCharts(sample) {
         // Pay attention to what data is required for each chart
 
         // Create bar chart in correct location
-        var data = d3.json("sample.json");
-      
         d3.json("sample.json").then(function(data) {
       
-          var sample_values = data.sample_values;
-          console.log(sample_values);
-          var otu_labels = data.otu_labels;
-          console.log(otu_labels);
-          var otu_ids = data.otu_ids;
-          console.log(otu_ids);
-      
-          var data = [{
-            values: sample_values,
-            x: data.otu_ids,
-            y: data.sample_values,
-            type: 'bar'
-            orientation: 'h'
-          }];
-      
-          var layout = {
-            height: 400,
-            width: 500
-          };
-      
-          Plotly.newPlot('bar', data);
-      
-          });
+            var sample_values = data.sample_values;
+            console.log(sample_values);
+            var otu_labels = data.otu_labels;
+            console.log(otu_labels);
+            var otu_ids = data.otu_ids;
+            console.log(otu_ids);
+        
+            var data = [{
+              values: sample_values,
+              x: data.otu_ids,
+              y: data.sample_values,
+        // create trace variable for the plot
+        var trace = {
+            x: sample_values,
+            y: otu_ids,
+            text: labels,
+            type:"bar",
+            orientation: "h",
+        };
+        
+        // create data variable
+        var data = [trace];
+        
+        // create layout variable to set plots layout
+        var layout = {
+            title: "Top 10 OTU",
+            yaxis:{
+                tickmode:"linear",
+                    },
+                margin: {
+                        l: 100,
+                        r: 100,
+                        t: 30,
+                        b: 20
+                    }
+                };
+        
+ 
         // Create bubble chart in correct location
         
         d3.json("sample.json").then((data) => {
