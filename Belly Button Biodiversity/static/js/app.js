@@ -61,22 +61,7 @@ function buildCharts(sample) {
                 orientation: "h"
             }];
               
-        
-        
-        // create layout variable to set plots layout
-        // var barlayout = {
-        //     title: "Top 10 OTU",
-        //     yaxis:{
-        //         tickmode:"linear",
-        //             },
-        //         margin: {
-        //                 l: 100,
-        //                 
-        //                 t: 30,
-        //                 
-        //             }
-        //         };
-        
+       
                 Plotly.newPlot("bar", bardata);
         // Create bubble chart in correct location
         
