@@ -61,7 +61,7 @@ function buildCharts(sample) {
             title: "OTU ID",
             showlegend: false,
             height: 600,
-            width: 1600
+            width: 1700
           };
           Plotly.newPlot("bubble", bubbledata, layout);
            });
