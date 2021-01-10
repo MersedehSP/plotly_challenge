@@ -1,5 +1,5 @@
 
-// Define a function that will create metadata for given sample
+// This function will create metadata for given sample, it will rese the json data, parse and filter the data to get samples's metadata/
 function buildMetadata(sample) {
     d3.json("samples.json").then(data => {
         var metaData = data.metadata;
@@ -11,7 +11,7 @@ function buildMetadata(sample) {
         console.log(result)
         var display = d3.select("#sample-metadata")
         display.html("");
-
+        // Specify the location of the metadata and update it
         Object.entries(result).forEach(([key, value]) => {
             console.log(key,value);
             display.append("h4").text(`${key}: ${value}`);
@@ -19,33 +19,15 @@ function buildMetadata(sample) {
         });
     }
 
-
-
-    // Read the json data
-
-        // Parse and filter the data to get the sample's metadata
-
-        // Specify the location of the metadata and update it
-
-
-
-// // Define a function that will create charts for given sample
+// // Define a function that will create charts for given sample//////////////////////////
 function buildCharts(sample) {
     d3.json("samples.json").then(data => {
         var allSamples = data.samples;
-        
+      
         var samplefilter = allSamples.filter(rowObject =>rowObject.id == sample);
         //console.log(metadatafilter)
         var result = samplefilter[0];
-
-    // Read the json data
-
-        // Parse and filter the data to get the sample's OTU data
-        // Pay attention to what data is required for each chart
-
-        // Create bar chart in correct location
-        
-      
+  /////////// Create bar chart in correct location///////////////////////////////////////
             var sample_values = result.sample_values;
             console.log(sample_values);
             var otu_labels = result.otu_labels;
@@ -59,14 +41,11 @@ function buildCharts(sample) {
                 text: otu_labels.slice(0,10).reverse(),
                 type:"bar",
                 orientation: "h"
-            }];
-              
-       
+            }];   
+
                 Plotly.newPlot("bar", bardata);
-        // Create bubble chart in correct location
-        
-        
-          var bubbledata = [{
+  //////// Create bubble chart in correct location/////////////////////////////////////
+            var bubbledata = [{
             x: otu_ids,
             y: sample_values,
             mode: 'markers',
@@ -82,63 +61,12 @@ function buildCharts(sample) {
             title: "OTU ID",
             showlegend: false,
             height: 600,
-            width: 1500
+            width: 1600
           };
           Plotly.newPlot("bubble", bubbledata, layout);
-
-
-        //   /// gauge chart
-        //   var bb_freqwash = [
-        //     {
-        //       type: "indicator",
-        //       mode: "gauge+number+delta",
-        //       value: data.WFREQ,
-        //       title: "Number of Belly Button Washes",
-        //       delta: { reference: 400, increasing: { color: "RebeccaPurple" } },
-        //       gauge: {
-        //         axis: { range: [null, 500], tickwidth: 1, tickcolor: "darkblue" },
-        //         bar: { color: "darkblue" },
-        //         bgcolor: "white",
-        //         borderwidth: 2,
-        //         bordercolor: "gray",
-        //         steps: [
-        //             { range: [0, 1], color: "#B2EC5D" },
-        //             { range: [1, 2], color: "#66FF00" },
-        //             { range: [2, 3], color: "#93C572" },
-        //             { range: [3, 4], color: "#87A96B" },
-        //             { range: [4, 5], color: "#78866B" },
-        //             { range: [5, 6], color: "#556B2F" },
-        //             { range: [6, 7], color: "#414833" },
-        //             { range: [7, 8], color: "#85BB65" },
-        //             { range: [8, 9], color: "#87A96B" },
-        //         ],
-        //         threshold: {
-        //           line: { color: "red", width: 4 },
-        //           thickness: 0.75,
-        //           value: 490
-        //         }
-        //       }
-        //     }
-        //   ];
-          
-        //   var layout = {
-        //     width: 500,
-        //     height: 400,
-        //     margin: { t: 25, r: 25, l: 25, b: 25 },
-        //     paper_bgcolor: "lavender",
-        //     font: { color: "darkblue", family: "Arial" }
-        //   };
-          
-        //   Plotly.newPlot('myDiv', data, layout);
-
-
-            });
+           });
         }
-
-
-
-
-// Define function that will run on page load
+// Define function that will run on page load/////////////////////////////////////////////////
 function init() {
 
     var selector = d3.select("#selDataset");
@@ -152,28 +80,23 @@ function init() {
           .text(sample)
           .property("value", sample);
       });
-  
-    // Add dropdown option for each sample
 
-    // Use first sample to build metadata and initial plots
+    // Use first sample to build metadata and initial plots//////////////////////////////////////
       const firstSample = sampleNamesID[0];
       buildCharts(firstSample);
       buildMetadata(firstSample);
       console.log(firstSample)
     });
   }
-    
-
-
+//to update chart when a new sample selected/////////////////////////////////////////////////////
 function optionChanged(newSample){
 
     // Update metadata with newly selected sample
+    // Update charts with newly selected sample
     buildCharts(newSample);
     buildMetadata(newSample);
-    // Update charts with newly selected sample
-
+    
 }
 
-// Initialize dashboard on page load
+// Initialize dashboard on page load/////////////////////////////////////////////////////////////
 init();
-
